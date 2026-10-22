@@ -22,13 +22,13 @@ Aqui está um resumo de onde encontrar cada parte do desafio:
 - **Uso de Ferramentas de IA**: Relato transparente de como usei IA no dia a dia e o que conheço sobre MCP (veja em [`EXPLICACOES.md#uso-de-ferramentas-de-ia`](./EXPLICACOES.md#uso-de-ferramentas-de-ia)).
 
 ---
-
+    
 ## Estrutura de Pastas
 
 ```text
 aplicacoes-fullstack/
 ├── 01-html-css/         # Desafio 1: index.html e css/styles.css
-├── 02-vue3-todo/        # Desafio 2: Projeto Vue 3 com Vite
+├── 02-vue3-todo/        # Desafio 2: Projeto Vue 3
 ├── 03-typescript/       # Desafio 3: Script TypeScript e exemplos de filtro
 ├── 04-database-sql/     # Desafio 4: Scripts SQL (schema e queries)
 ├── 05-backend-nestjs/   # Desafio 5: API NestJS com controller e service
@@ -48,3 +48,57 @@ aplicacoes-fullstack/
 5. **Teste de Envio Bem-Sucedido (CSS `:target`)**: Preencha nome completo, e-mail válido e senha com 8 ou mais caracteres e clique em "Criar conta". O formulário navegará localmente para a âncora `#success-message`, revelando imediatamente a mensagem verde de sucesso estilizada.
 6. **Teste de Retorno ao Formulário**: Clique em "Fazer novo cadastro" dentro do alerta de sucesso para limpar a âncora e retornar ao formulário.
 7. **Auditoria de Qualidade (Lighthouse)**: No DevTools (`F12`), abra a aba **Lighthouse**, marque as opções *Performance*, *Accessibility*, *Best Practices* e *SEO* e clique em **Analyze page load**. A página foi projetada deliberadamente para cumprir todos os parâmetros técnicos da ferramenta, alcançando resultados plenamente satisfatórios em todas as categorias.
+
+---
+
+### 2. Vue 3 (`02-vue3-todo/`)
+
+#### Pré-requisitos
+- Node.js versão `22.18.0` ou superior (ou versão LTS recente).
+- Gerenciador de pacotes `npm`.
+
+#### Como Rodar a Aplicação
+1. No terminal, navegue até a pasta da aplicação:
+   ```bash
+   cd 02-vue3-todo
+   ```
+2. Instale as dependências do projeto:
+   ```bash
+   npm install
+   ```
+3. Inicie o servidor de desenvolvimento com o Vite:
+   ```bash
+   npm run dev
+   ```
+4. Abra o endereço exibido no terminal (por padrão, [`http://localhost:5173`](http://localhost:5173)) em qualquer navegador moderno.
+
+#### Como Testar a Aplicação na Interface
+1. **Foco Automático e Placeholder**: Ao carregar a página, observe que o campo *"O que precisa ser feito?"* já inicia automaticamente focado com o cursor piscante ativo e o placeholder visível, permitindo digitação imediata.
+2. **Inclusão de Tarefas**: Digite o título de uma nova tarefa no campo e pressione Enter ou clique no botão **Adicionar**. A tarefa será inserida imediatamente no topo da lista.
+3. **Bloqueio de Tarefa em Branco**: Tente clicar em "Adicionar" com o campo vazio ou apenas com espaços. Uma mensagem de erro acessível (`role="alert"`) será exibida e o foco retornará automaticamente ao campo de entrada.
+4. **Conclusão de Tarefas**: Clique no botão circular com borda roxa (`.toggle-btn`) de qualquer tarefa. O botão mudará de estado, o título receberá efeito riscado (*line-through*) e o status acessível mudará para concluído (`aria-checked="true"`). Clique novamente para reabrir como pendente.
+5. **Remoção de Tarefas**: Clique no botão com o ícone `✕` à direita de qualquer tarefa. O item será excluído da lista e a contagem numérica será recalculada instantaneamente.
+6. **Filtros por Status**: Clique nos botões "Todas", "Pendentes" e "Concluídas". A lista filtrará os itens de forma dinâmica e os badges numéricos indicarão o total exato em cada estado.
+7. **Limpeza em Lote de Concluídas**: Com tarefas marcadas como concluídas, clique no botão *"Limpar concluídas"* para removê-las de uma só vez.
+8. **Paginação de Tarefas (`splice`)**: A aplicação já inicializa com 7 tarefas pré-cadastradas para demonstrar a paginação ativa (> 5 itens). Navegue entre a página 1 (5 primeiros itens) e a página 2 (2 itens restantes) utilizando os botões numéricos ou os botões "Anterior" e "Próxima".
+9. **Persistência de Dados**: Crie, conclua ou remova tarefas e recarregue a página (F5). Todos os dados e estados permanecerão salvos graças à sincronização reativa com o `localStorage`.
+
+#### Como Executar os Testes Automatizados e Auditoria de Código
+Dentro da pasta `02-vue3-todo/`, execute:
+- **Testes Unitários (Vitest)**:
+  ```bash
+  npm run test:unit
+  ```
+  *(Valida as regras de negócio do composable, isolamento de estado, paginação com `splice()` e integração dos componentes no DOM)*.
+- **Checagem Estrita de Tipos (TypeScript)**:
+  ```bash
+  npm run type-check
+  ```
+- **Linter de Qualidade (Oxlint e ESLint)**:
+  ```bash
+  npm run lint
+  ```
+- **Compilação de Produção (Build Vite)**:
+  ```bash
+  npm run build
+  ```

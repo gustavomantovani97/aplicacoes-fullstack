@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<!-- Head & Metatags de SEO -->
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- #region SEO Técnico: Metatags essenciais -->
+  
+  <title>Criar Conta | Plataforma de Inteligência e SEO</title>
+  <meta name="description" content="Cadastre-se gratuitamente na plataforma líder em otimização e inteligência de SEO. Aumente seu tráfego orgânico com dados precisos.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://exemplo.com.br/cadastro">
+  <meta name="theme-color" content="#e0e5ec">
+
+  <!-- #endregion -->
+
+  <!-- #region Open Graph / Redes Sociais -->
+  
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Criar Conta | Plataforma de Inteligência e SEO">
+  <meta property="og:description" content="Comece agora a otimizar sua estratégia orgânica com nossa ferramenta completa de SEO.">
+  <meta property="og:site_name" content="Plataforma SEO">
+  
+  <!-- #endregion -->
+
+  <!-- Folha de estilos neumórfica -->
+   
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+  <div class="page-wrapper">
+
+    <!-- Header / Identidade da Aplicação -->
+
+    <header class="page-header">
+      <div class="brand-badge" aria-label="Logo da Plataforma SEO">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-name">FORMULÁRIO DE CADASTRO</span>
+      </div>
+    </header>
+
+    <!-- #region Conteúdo Principal / Card de Cadastro -->
+
+    <main class="main-content">
+      <section class="card neu-raised" aria-labelledby="form-heading">
+        <div class="card-header">
+          <h1 id="form-heading" class="card-title">Criar nova conta</h1>
+          <p class="card-description">
+            Preencha seus dados cadastrais para acessar nossos relatórios e ferramentas de SEO.
+          </p>
+        </div>
+
+        <!-- #region Alerta de Sucesso Acessível (Pure HTML+CSS via :target) -->
+        
+        <div id="success-message" class="alert alert-success neu-inset" role="status" aria-live="polite" tabindex="-1">
+          <span class="alert-icon" aria-hidden="true">✓</span>
+          <div class="alert-content">
+            <h2 class="alert-title">Conta criada com sucesso!</h2>
+            <p class="alert-description">Seu cadastro foi concluído localmente com sucesso. Seja bem-vindo(a) à plataforma.</p>
+            <a href="#" class="alert-reset-link">Fazer novo cadastro</a>
+          </div>
+        </div>
+        
+        <!-- #endregion -->
+
+        <!-- #region Formulário de Cadastro (Validação Nativa HTML5 + Pure CSS) -->
+
+        <form id="signup-form" class="signup-form" action="#success-message" method="GET">
+          
+          <!-- Campo: Nome Completo -->
+          <div class="form-group">
+            <label for="name" class="form-label">
+              Nome completo
+              <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              class="form-input neu-inset" 
+              required 
+              autocomplete="name" 
+              placeholder="Ex: João da Silva"
+              aria-required="true"
+              aria-describedby="name-error"
+            >
+            <span id="name-error" class="field-error">Por favor, informe seu nome completo.</span>
+          </div>
+
+          <!-- Campo: E-mail -->
+          <div class="form-group">
+            <label for="email" class="form-label">
+              E-mail corporativo ou pessoal
+              <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input neu-inset" 
+              required 
+              autocomplete="email" 
+              placeholder="Ex: joao.silva@exemplo.com"
+              aria-required="true"
+              aria-describedby="email-error"
+            >
+            <span id="email-error" class="field-error">Insira um e-mail em formato válido (exemplo: usuario@dominio.com).</span>
+          </div>
+
+          <!-- Campo: Senha -->
+          <div class="form-group">
+            <label for="password" class="form-label">
+              Senha de acesso
+              <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input neu-inset" 
+              required 
+              minlength="8" 
+              autocomplete="new-password" 
+              placeholder="Digite ao menos 8 caracteres"
+              aria-required="true"
+              aria-describedby="password-hint password-error"
+            >
+            <small id="password-hint" class="field-hint">Mínimo de 8 caracteres.</small>
+            <span id="password-error" class="field-error">A senha deve conter no mínimo 8 caracteres.</span>
+          </div>
+
+          <!-- Ações do formulário -->
+          <div class="form-actions">
+            <button type="submit" id="submit-btn" class="btn btn-primary neu-btn">
+              Criar conta
+            </button>
+          </div>
+
+        </form>
+        <!-- #endregion -->
+      
+      </section>
+    </main>
+
+    <!-- #endregion -->
+
+    <!-- Rodapé / Footer Semântico -->
+
+    <footer class="page-footer">
+      <p>&copy; 2026 Lorem Ipsum Tecnologia Ltda. Interface acessível e semântica.</p>
+    </footer>
+
+  </div>
+</body>
+</html>

@@ -150,3 +150,43 @@ Dentro da pasta `02-vue3-todo/`, execute:
   Ao rodar `npm run typecheck`, o compilador recusa a chamada com o erro:
   `Argument of type '"name"' is not assignable to parameter of type 'NumericKeys<User>'.`
   Depois do teste, basta voltar o campo para `'age'`.
+
+---
+
+### 4. Banco de Dados (`04-database-sql/`)
+
+#### Pré-requisitos
+- Um servidor MySQL 8 ou MariaDB rodando.
+- Um usuário com permissão para criar o banco `desafio`.
+
+#### Como Rodar
+Os arquivos rodam em ordem: `01` cria o banco e a tabela, `02` insere os dados e `03` executa as consultas.
+
+Pelo terminal:
+```bash
+cd 04-database-sql
+mysql -u SEU_USUARIO -p < 01-schema.sql
+mysql -u SEU_USUARIO -p < 02-seed.sql
+mysql -u SEU_USUARIO -p --table < 03-queries.sql
+```
+No MariaDB, o comando também pode ser `mariadb` no lugar de `mysql`.
+
+Pelo MySQL Workbench: abra cada arquivo em **File → Open SQL Script…**, na mesma ordem, e execute com o ícone do raio.
+
+O `02-seed.sql` deve rodar uma vez só. Rodar de novo dá erro de registro duplicado. Para recomeçar do zero, rode o `01-schema.sql` de novo, que recria a tabela vazia, e depois o `02-seed.sql`.
+
+#### Resultado Esperado
+Consulta 1, do mais recente para o mais antigo:
+
+| id | name | email | created_at |
+|---|---|---|---|
+| 3 | Maria | maria@email.com | 2024-02-15 00:00:00 |
+| 2 | Pedro | pedro@email.com | 2024-02-01 00:00:00 |
+| 1 | Ana | ana@email.com | 2024-01-01 00:00:00 |
+
+Consulta 2 (bônus), usuários por mês:
+
+| mes | total_usuarios |
+|---|---|
+| 2024-01 | 1 |
+| 2024-02 | 2 |

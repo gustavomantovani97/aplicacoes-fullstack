@@ -197,7 +197,88 @@ O `npm run typecheck` (`tsc --noEmit`, com `strict: true`) também passa sem err
 
 ---
 
-# Seção 4
+# Seção 4 - 04-database-sql: Consultas SQL na tabela users
+
+## O que eu fiz
+
+Separei a etapa em três arquivos, para rodar em ordem:
+
+- `01-schema.sql` cria o banco `desafio` e a tabela `users`;
+- `02-seed.sql` insere Ana, Pedro e Maria com os dados do enunciado;
+- `03-queries.sql` tem as duas consultas pedidas.
+
+Testei tudo no MySQL Workbench, conectado ao MariaDB 13 que já vem no Arch Linux. As consultas usam só SQL comum ao MySQL e ao MariaDB, então rodam igual nos dois.
+
+## Como montei a tabela
+
+```sql
+CREATE TABLE users (
+  id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name       VARCHAR(100) NOT NULL,
+  email      VARCHAR(255) NOT NULL,
+  created_at DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_users_email (email),
+  KEY idx_users_created_at (created_at)
+);
+```
+
+- `id` é a chave primária, com `AUTO_INCREMENT` para o banco gerar o número sozinho em cadastros novos.
+- `email` tem `UNIQUE`, porque dois usuários não deveriam ter o mesmo e-mail.
+- `created_at` é `DATETIME`, que guarda data e hora. O enunciado só traz a data, então o horário ficou `00:00:00`. O `DEFAULT CURRENT_TIMESTAMP` preenche a data sozinho quando um cadastro novo não informa.
+- Criei um índice em `created_at` porque a primeira consulta ordena por essa coluna. Com três linhas o banco nem usa o índice, já que ler tudo é mais rápido. Ele faz diferença quando a tabela cresce.
+- O banco usa `utf8mb4`, que aceita acentos e qualquer outro caractere.
+
+O `01-schema.sql` começa com `DROP TABLE IF EXISTS users`. Assim dá para rodar o script de novo e recomeçar com a tabela vazia.
+
+## Consulta 1: usuários do mais recente para o mais antigo
+
+```sql
+SELECT id, name, email, created_at
+FROM users
+ORDER BY created_at DESC, id DESC;
+```
+
+O `ORDER BY created_at` ordena pela data de cadastro, e o `DESC` inverte a ordem para a data mais recente vir primeiro. O `id DESC` é um desempate: se dois usuários tiverem a mesma data, o de id maior, que foi cadastrado depois, aparece antes. Sem isso, a ordem entre empatados não é garantida.
+
+Listei as colunas no `SELECT` em vez de usar `SELECT *`. Assim a consulta deixa claro o que devolve e não muda de comportamento se alguém acrescentar uma coluna na tabela depois.
+
+Resultado:
+
+| id | name | email | created_at |
+|---|---|---|---|
+| 3 | Maria | maria@email.com | 2024-02-15 00:00:00 |
+| 2 | Pedro | pedro@email.com | 2024-02-01 00:00:00 |
+| 1 | Ana | ana@email.com | 2024-01-01 00:00:00 |
+
+## Consulta 2 (bônus): usuários criados por mês
+
+```sql
+SELECT DATE_FORMAT(created_at, '%Y-%m') AS mes,
+       COUNT(*) AS total_usuarios
+FROM users
+GROUP BY mes
+ORDER BY mes;
+```
+
+Ela funciona em três partes:
+
+1. `DATE_FORMAT(created_at, '%Y-%m')` transforma a data em ano e mês: `2024-02-15` vira `2024-02`. O `AS mes` dá um nome para esse valor.
+2. `GROUP BY mes` junta numa linha só todos os usuários do mesmo mês.
+3. `COUNT(*)` conta quantos usuários caíram em cada grupo.
+
+O `ORDER BY mes` deixa os meses em ordem cronológica. Funciona mesmo sendo texto, porque no formato `AAAA-MM` a ordem alfabética é igual à ordem das datas.
+
+Resultado:
+
+| mes | total_usuarios |
+|---|---|
+| 2024-01 | 1 |
+| 2024-02 | 2 |
+
+Uma limitação: meses sem nenhum cadastro não aparecem, porque o `GROUP BY` só cria grupos para os valores que existem na tabela. Para mostrar esses meses com zero, eu precisaria de uma tabela com todos os meses do período e um `LEFT JOIN` com `users`.
+
+---
 
 # Seção 5
 

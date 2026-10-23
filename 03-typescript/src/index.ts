@@ -9,7 +9,7 @@ import {
 } from './users.js';
 
 console.log('='.repeat(60));
-console.log('DESAFIO 3 - DEMONSTRAÇÃO TYPESCRIPT');
+console.log('DEMONSTRAÇÃO: FILTRO DE USUÁRIOS EM TYPESCRIPT');
 console.log('='.repeat(60));
 
 console.log('\n1. Array original de usuários:');

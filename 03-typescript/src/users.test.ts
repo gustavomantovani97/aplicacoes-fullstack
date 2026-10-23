@@ -8,7 +8,7 @@ import {
   type User,
 } from './users.js';
 
-describe('Desafio 3 - Testes de Funções TypeScript', () => {
+describe('Filtro de usuários em TypeScript', () => {
   describe('getUserNamesOlderThan23', () => {
     it('deve retornar exatamente os nomes dos usuários com idade estritamente maior que 23 anos', () => {
       const result = getUserNamesOlderThan23(users);

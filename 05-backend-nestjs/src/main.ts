@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('API de usuários')
-    .setDescription('Desafio 5: GET e POST /users com dados em memória')
+    .setDescription('GET e POST /users com dados em memória')
     .setVersion('1.0')
     .build();
   SwaggerModule.setup('docs', app, () =>

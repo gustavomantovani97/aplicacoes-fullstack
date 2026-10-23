@@ -1,7 +1,7 @@
 {
   "name": "03-typescript",
   "version": "1.0.0",
-  "description": "Desafio 3 - Manipulação e filtragem tipada de coleções com TypeScript e Generics",
+  "description": "Filtro tipado de usuários e versão genérica por campo numérico com TypeScript",
   "private": true,
   "type": "module",
   "scripts": {

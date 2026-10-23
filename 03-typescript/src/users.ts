@@ -1,5 +1,5 @@
 /**
- * Desafio 3 - TypeScript
+ * Filtro de usuários em TypeScript
  * Tipagem estrita de coleções, filtros específicos e funções genéricas.
  */
 
@@ -14,7 +14,7 @@ export interface User {
 }
 
 /**
- * Array de usuários base fornecido no enunciado do desafio.
+ * Array de usuários informado na solicitação.
  */
 export const users: readonly User[] = [
   { id: 1, name: 'Ana', age: 25 },
@@ -23,7 +23,7 @@ export const users: readonly User[] = [
 ];
 
 /**
- * 1 e 2. Função específica do desafio:
+ * 1 e 2. Função pedida na solicitação:
  * Recebe o array tipado de usuários e retorna apenas os nomes daqueles
  * com idade estritamente maior que 23 anos (age > 23).
  *

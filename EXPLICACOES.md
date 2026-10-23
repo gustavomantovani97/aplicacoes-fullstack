@@ -280,7 +280,109 @@ Uma limitação: meses sem nenhum cadastro não aparecem, porque o `GROUP BY` s�
 
 ---
 
-# Seção 5
+# Seção 5 - 05-backend-nestjs: API de usuários com NestJS
+
+## O que eu fiz
+
+Uma API em NestJS com duas rotas:
+
+- `GET /users` devolve a lista de usuários em JSON. Ela começa com Ana e Pedro, exatamente como no enunciado.
+- `POST /users` recebe `name` e `email` no corpo, cria o usuário com o próximo id e devolve o usuário criado com status 201.
+
+Os dados ficam em memória, num array dentro do service, como o desafio permite. Quando o servidor reinicia, a lista volta a ter só Ana e Pedro.
+
+O projeto usa o NestJS 12, que gera o código em ESM e traz o Vitest no lugar do Jest. Por isso os imports internos terminam em `.js`.
+
+## Como organizei os arquivos
+
+```text
+05-backend-nestjs/
+├── src/
+│   ├── main.ts              # sobe o servidor e a documentação Swagger
+│   ├── setup-app.ts         # validação global, usada pelo servidor e pelos testes
+│   ├── app.module.ts        # módulo raiz, só importa o UsersModule
+│   └── users/
+│       ├── users.module.ts
+│       ├── users.controller.ts
+│       ├── users.service.ts
+│       ├── dto/create-user.dto.ts
+│       ├── entities/user.entity.ts
+│       ├── users.controller.spec.ts
+│       └── users.service.spec.ts
+├── test/users.e2e-spec.ts   # testes de ponta a ponta das rotas
+└── requests.http            # requisições de exemplo para o VS Code
+```
+
+Organizei por domínio: tudo que é de usuário fica na pasta `users/`. Se a API ganhasse, por exemplo, produtos, eles teriam a própria pasta e o próprio módulo, sem mexer em `users/`.
+
+Cada arquivo tem um papel:
+
+- **Module** (`users.module.ts`): junta o controller e o service e diz ao Nest como ligar um ao outro. O `AppModule` só importa o `UsersModule`.
+- **Controller** (`users.controller.ts`): recebe a requisição HTTP e chama o service. Não tem regra de negócio, só as rotas `@Get()` e `@Post()`.
+- **Service** (`users.service.ts`): guarda a lista e tem as regras: listar, gerar o próximo id e não aceitar e-mail repetido.
+- **DTO** (`dto/create-user.dto.ts`): descreve o que o `POST` aceita no corpo e como validar cada campo.
+- **Entity** (`entities/user.entity.ts`): o formato de um usuário, com `id`, `name` e `email`.
+
+O controller não cria o service com `new`. Ele recebe o service pelo construtor, e o Nest entrega a instância: é a injeção de dependência. Nos testes do controller, isso permite trocar o service por um simulado e testar o controller sozinho.
+
+## Validação
+
+Todo `POST` passa por um `ValidationPipe` global, configurado em `setup-app.ts`:
+
+- `name` é obrigatório, precisa ser texto e pode ter até 100 caracteres;
+- `email` é obrigatório e precisa ser um e-mail válido;
+- os espaços no começo e no fim são removidos antes da validação, então um nome só com espaços conta como vazio;
+- campos que não existem no DTO são recusados. Um `"admin": true` no corpo, por exemplo, dá erro em vez de ser ignorado.
+
+Se algo estiver errado, a API responde 400 com uma mensagem por campo, em português. As mensagens dos campos estão no próprio DTO. A de campo não permitido vem pronta do Nest em inglês, e uma função em `setup-app.ts` traduz.
+
+Um detalhe que apareceu nos testes: o `class-validator` roda as regras de cada campo de baixo para cima. Como a validação para no primeiro erro de cada campo, a regra de campo obrigatório fica por último no DTO. Na ordem contrária, um `POST` sem e-mail respondia "O e-mail pode ter no máximo 255 caracteres".
+
+Se o e-mail já existir, o service lança uma `ConflictException`, e a API responde 409 com "E-mail já cadastrado". A comparação ignora maiúsculas, então `ANA@email.com` também conta como repetido.
+
+## Respostas
+
+| Situação | Status |
+|---|---|
+| `GET /users` | 200, com a lista |
+| `POST /users` com dados válidos | 201, com o usuário criado |
+| `POST /users` com dado inválido ou campo extra | 400 |
+| `POST /users` com e-mail já cadastrado | 409 |
+
+Por exemplo, um `POST` com este corpo:
+
+```json
+{ "name": "Maria", "email": "maria@email.com" }
+```
+
+responde 201 com:
+
+```json
+{ "id": 3, "name": "Maria", "email": "maria@email.com" }
+```
+
+## Documentação com Swagger
+
+Com o servidor rodando, a página `http://localhost:3000/docs` mostra as duas rotas, o formato do corpo e as respostas possíveis. Dá para testar as rotas por ali mesmo, no botão "Try it out".
+
+## Decisões
+
+- **Porta:** o servidor lê a porta de `process.env.PORT` e usa 3000 se ela não estiver definida. Não usei o `ConfigModule` do Nest porque a porta é a única configuração do projeto. Com banco de dados ou chaves de API, eu usaria ele para juntar e validar as variáveis num lugar só.
+- **Lista protegida:** o `findAll` devolve uma cópia da lista. Assim, quem chama não consegue alterar os dados guardados no service.
+- **Próximo id:** é o maior id da lista mais 1, e não o tamanho da lista. Se um dia existir remoção de usuário, isso evita repetir um id.
+- **`setup-app.ts` separado:** o servidor e os testes de ponta a ponta usam a mesma função para configurar a validação. Assim, os testes rodam com a mesma regra da aplicação real.
+
+## Testes
+
+São 14 testes com Vitest:
+
+- 4 no service: lista inicial, cadastro com o próximo id, e-mail repetido e proteção da lista.
+- 2 no controller, com o service simulado, para conferir que ele só repassa os dados.
+- 8 de ponta a ponta (`test/users.e2e-spec.ts`), que sobem a aplicação e fazem requisições de verdade: o `GET`, o `POST` válido, quatro casos de erro 400, as mensagens em português e o 409.
+
+O lint (Oxlint) e a formatação (Prettier) passam sem avisos.
+
+---
 
 # Seção 6
 

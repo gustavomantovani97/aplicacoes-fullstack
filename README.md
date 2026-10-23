@@ -190,3 +190,57 @@ Consulta 2 (bônus), usuários por mês:
 |---|---|
 | 2024-01 | 1 |
 | 2024-02 | 2 |
+
+---
+
+### 5. Backend NestJS (`05-backend-nestjs/`)
+
+#### Pré-requisitos
+- Node.js 22 ou superior.
+- Gerenciador de pacotes `npm`.
+
+#### Como Rodar
+```bash
+cd 05-backend-nestjs
+npm install
+npm run start:dev
+```
+A API sobe em `http://localhost:3000`. Para usar outra porta, defina a variável `PORT` (por exemplo, `PORT=4000 npm run start:dev`).
+
+- `http://localhost:3000/users` lista os usuários.
+- `http://localhost:3000/docs` abre a documentação Swagger, onde dá para testar as duas rotas.
+- O arquivo `requests.http` tem requisições prontas para a extensão REST Client do VS Code.
+
+Para rodar a versão compilada:
+```bash
+npm run build
+npm run start:prod
+```
+
+Se o `npm install` falhar com `Cannot read properties of null (reading 'edgesOut')`, é um bug do npm 10 com o NestJS 12. Rode `npm ci` ou `npx npm@11 install`.
+
+#### Testes
+```bash
+npm test           # 6 testes unitários (service e controller)
+npm run test:e2e   # 8 testes de ponta a ponta das rotas
+npm run lint
+```
+
+#### Resultado Esperado
+`GET /users`:
+```json
+[
+  { "id": 1, "name": "Ana", "email": "ana@email.com" },
+  { "id": 2, "name": "Pedro", "email": "pedro@email.com" }
+]
+```
+
+`POST /users`:
+```bash
+curl -X POST http://localhost:3000/users \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Maria","email":"maria@email.com"}'
+```
+Resposta `201`: `{"id":3,"name":"Maria","email":"maria@email.com"}`.
+
+Nome vazio, e-mail inválido ou campo extra no corpo respondem `400`. E-mail já cadastrado responde `409`. Os dados ficam em memória: ao reiniciar o servidor, a lista volta a ter só Ana e Pedro.

@@ -1,0 +1,32 @@
+# Requisições de exemplo para a extensão REST Client do VS Code.
+# Com o servidor rodando (npm run start:dev), clique em "Send Request" acima de cada uma.
+
+### Lista os usuários
+GET http://localhost:3000/users
+
+### Cadastra um usuário
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Maria",
+  "email": "maria@email.com"
+}
+
+### E-mail inválido (deve responder 400)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Maria",
+  "email": "maria"
+}
+
+### E-mail repetido (deve responder 409)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Outra Ana",
+  "email": "ana@email.com"
+}

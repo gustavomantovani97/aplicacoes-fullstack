@@ -49,7 +49,7 @@ const DEFAULT_TODOS: TodoItem[] = [
   },
   {
     id: '5',
-    title: 'Implementar paginação de tarefas com o método splice()',
+    title: 'Implementar paginação de tarefas',
     completed: false,
     createdAt: Date.now() - 1200000,
   },
@@ -117,13 +117,12 @@ export function useTodoList() {
   })
 
   /**
-   * Tarefas exibidas na página atual obtidas através do método nativo splice().
-   * Clona a lista para garantir que a lista reativa original não seja mutada.
+   * Tarefas exibidas na página atual.
+   * slice() devolve um recorte novo sem alterar a lista original.
    */
   const paginatedTodos = computed(() => {
-    const listCopy = [...filteredTodos.value]
     const startIndex = (pagination.currentPage - 1) * pagination.itemsPerPage
-    return listCopy.splice(startIndex, pagination.itemsPerPage)
+    return filteredTodos.value.slice(startIndex, startIndex + pagination.itemsPerPage)
   })
 
   // Ajusta a página atual se a lista for reduzida após exclusão ou filtro

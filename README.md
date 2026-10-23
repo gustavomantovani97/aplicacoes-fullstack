@@ -47,7 +47,12 @@ aplicacoes-fullstack/
 4. **Teste de Senha Curta**: Digite uma senha com menos de 8 caracteres e tente submeter; o navegador indicará a necessidade de atingir 8 caracteres.
 5. **Teste de Envio Bem-Sucedido (CSS `:target`)**: Preencha nome completo, e-mail válido e senha com 8 ou mais caracteres e clique em "Criar conta". O formulário navegará localmente para a âncora `#success-message`, revelando imediatamente a mensagem verde de sucesso estilizada.
 6. **Teste de Retorno ao Formulário**: Clique em "Fazer novo cadastro" dentro do alerta de sucesso para limpar a âncora e retornar ao formulário.
-7. **Auditoria de Qualidade (Lighthouse)**: No DevTools (`F12`), abra a aba **Lighthouse**, marque as opções *Performance*, *Accessibility*, *Best Practices* e *SEO* e clique em **Analyze page load**. A página foi projetada deliberadamente para cumprir todos os parâmetros técnicos da ferramenta, alcançando resultados plenamente satisfatórios em todas as categorias.
+7. **Auditoria de Qualidade (Lighthouse)**: No DevTools (`F12`), abra a aba **Lighthouse**, marque as opções *Performance*, *Accessibility*, *Best Practices* e *SEO* e clique em **Analyze page load**. As notas obtidas (Lighthouse 13.5, iguais no modo mobile e desktop; a to-do foi medida no build de produção, com `npm run build` e `npm run preview`):
+
+| Página | Performance | Acessibilidade | Boas práticas | SEO |
+|---|---|---|---|---|
+| 01-html-css | 100 | 100 | 100 | 100 |
+| 02-vue3-todo | 100 | 100 | 100 | 100 |
 
 ---
 
@@ -80,7 +85,7 @@ aplicacoes-fullstack/
 5. **Remoção de Tarefas**: Clique no botão com o ícone `✕` à direita de qualquer tarefa. O item será excluído da lista e a contagem numérica será recalculada instantaneamente.
 6. **Filtros por Status**: Clique nos botões "Todas", "Pendentes" e "Concluídas". A lista filtrará os itens de forma dinâmica e os badges numéricos indicarão o total exato em cada estado.
 7. **Limpeza em Lote de Concluídas**: Com tarefas marcadas como concluídas, clique no botão *"Limpar concluídas"* para removê-las de uma só vez.
-8. **Paginação de Tarefas (`splice`)**: A aplicação já inicializa com 7 tarefas pré-cadastradas para demonstrar a paginação ativa (> 5 itens). Navegue entre a página 1 (5 primeiros itens) e a página 2 (2 itens restantes) utilizando os botões numéricos ou os botões "Anterior" e "Próxima".
+8. **Paginação de Tarefas**: A aplicação já inicializa com 7 tarefas pré-cadastradas para demonstrar a paginação ativa (> 5 itens). Navegue entre a página 1 (5 primeiros itens) e a página 2 (2 itens restantes) utilizando os botões numéricos ou os botões "Anterior" e "Próxima".
 9. **Persistência de Dados**: Crie, conclua ou remova tarefas e recarregue a página (F5). Todos os dados e estados permanecerão salvos graças à sincronização reativa com o `localStorage`.
 
 #### Como Executar os Testes Automatizados e Auditoria de Código
@@ -89,7 +94,7 @@ Dentro da pasta `02-vue3-todo/`, execute:
   ```bash
   npm run test:unit
   ```
-  *(Valida as regras de negócio do composable, isolamento de estado, paginação com `splice()` e integração dos componentes no DOM)*.
+  *(Valida as regras de negócio do composable, isolamento de estado, paginação e integração dos componentes no DOM)*.
 - **Checagem Estrita de Tipos (TypeScript)**:
   ```bash
   npm run type-check
@@ -102,3 +107,46 @@ Dentro da pasta `02-vue3-todo/`, execute:
   ```bash
   npm run build
   ```
+
+---
+
+### 3. TypeScript (`03-typescript/`)
+
+#### Pré-requisitos
+- Node.js `22.18.0` ou superior (ou versão LTS recente).
+- Gerenciador de pacotes `npm`.
+
+#### Como Rodar o Exemplo
+1. No terminal, acesse a pasta do desafio:
+   ```bash
+   cd 03-typescript
+   ```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Execute a demonstração:
+   ```bash
+   npm start
+   ```
+   O terminal exibirá o array original, os nomes filtrados (`[ 'Ana', 'Pedro' ]`) e os exemplos das funções genéricas.
+
+#### Testes e Checagem de Tipos
+- **Testes unitários (`node:test`)**:
+  ```bash
+  npm test
+  ```
+  Roda os 10 testes unitários validando o filtro estrito, limites de idade, arrays vazios e o comportamento genérico.
+- **Checagem de tipos (TypeScript)**:
+  ```bash
+  npm run typecheck
+  ```
+  Roda o compilador (`tsc --noEmit`) para validar a tipagem de todo o projeto sem gerar arquivos.
+- **Teste prático da proteção de tipos**:
+  Para ver o TypeScript barrando um campo inválido, troque temporariamente `'age'` por `'name'` em `src/index.ts`:
+  ```ts
+  const filteredObjects = filterByNumericField(users, 'name', 23);
+  ```
+  Ao rodar `npm run typecheck`, o compilador recusa a chamada com o erro:
+  `Argument of type '"name"' is not assignable to parameter of type 'NumericKeys<User>'.`
+  Depois do teste, basta voltar o campo para `'age'`.

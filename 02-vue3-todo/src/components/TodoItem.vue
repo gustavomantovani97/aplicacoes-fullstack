@@ -73,10 +73,6 @@ function handleRemove() {
   transform: translateY(-1px);
 }
 
-.todo-item.is-completed {
-  opacity: 0.85;
-}
-
 /* Botão Toggle / Checkbox Neumórfico com Borda Contrastante */
 .toggle-btn {
   width: 34px;

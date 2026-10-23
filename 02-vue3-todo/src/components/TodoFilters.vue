@@ -52,7 +52,6 @@ function getCount(key: TodoFilter): number {
       v-if="stats.completed > 0"
       type="button"
       class="btn-clear neu-button"
-      aria-label="Limpar todas as tarefas concluídas"
       @click="emit('clear-completed')"
     >
       Limpar concluídas

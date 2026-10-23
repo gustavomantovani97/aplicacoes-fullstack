@@ -84,7 +84,7 @@ describe('useTodoList Composable', () => {
     expect(todos.value.every((t) => !t.completed)).toBe(true)
   })
 
-  it('pagina tarefas exibindo no máximo 5 itens por página com splice', () => {
+  it('pagina tarefas exibindo no máximo 5 itens por página', () => {
     const { todos, addTodo, paginatedTodos, totalPages, currentPage, nextPage, prevPage } = useTodoList()
 
     // Limpa e adiciona 8 tarefas

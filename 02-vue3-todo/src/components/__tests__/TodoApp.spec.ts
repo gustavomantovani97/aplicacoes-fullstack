@@ -11,7 +11,7 @@ describe('Integração do App To-Do (Vue 3)', () => {
     const wrapper = mount(App)
     expect(wrapper.find('h1').text()).toBe('Gerenciador de Tarefas')
     expect(wrapper.find('input#new-todo-input').exists()).toBe(true)
-    // A página 1 renderiza até 5 itens (devido ao limite de paginação com splice)
+    // A página 1 renderiza até 5 itens (limite de itens por página)
     expect(wrapper.findAll('li.todo-item').length).toBe(5)
     expect(wrapper.find('nav.pagination-nav').exists()).toBe(true)
   })
